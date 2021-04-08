@@ -1,14 +1,13 @@
 import {Swiper, SwiperSlide} from 'swiper/react'
-import SwiperCore, {Navigation, Pagination, Controller} from 'swiper'
+import SwiperCore, {Navigation, Pagination, Thumbs} from 'swiper'
 import 'swiper/swiper-bundle.css'
 import { useState } from 'react'
 
-SwiperCore.use( [Navigation, Pagination, Controller] )
+SwiperCore.use( [Navigation, Pagination, Thumbs] )
 
 function App() {
 
   const [thumbsSwiper, setThumbsSwiper] = useState(null)
-  const [mainSwiper, setMainSwiper] = useState(null)
 
   const slides = []
   const thumbs = []
@@ -33,8 +32,7 @@ function App() {
           id="main"
           spaceBetween={0}
           slidesPerView={1}
-          onSwiper={setMainSwiper}
-          controller={{control: thumbsSwiper}}
+          thumbs={{swiper: thumbsSwiper}}
           navigation
           pagination
         >
@@ -43,7 +41,8 @@ function App() {
         <Swiper
           id="thumbs"
           onSwiper={setThumbsSwiper}
-          controller={{control: mainSwiper}}
+          watchSlidesVisibility
+          watchSlidesProgress
           spaceBetween={5}
           slidesPerView={5}          
           navigation
