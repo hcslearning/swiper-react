@@ -1,40 +1,55 @@
 import {Swiper, SwiperSlide} from 'swiper/react'
-import SwiperCore, {Navigation, Pagination} from 'swiper'
+import SwiperCore, {Navigation, Pagination, Controller} from 'swiper'
 import 'swiper/swiper-bundle.css'
 import { useState } from 'react'
 
-SwiperCore.use( [Navigation, Pagination] )
+SwiperCore.use( [Navigation, Pagination, Controller] )
 
 function App() {
 
-  const [imagen, setImagen] = useState('https://picsum.photos/id/1/1000/880')
+  const [thumbsSwiper, setThumbsSwiper] = useState(null)
+  const [mainSwiper, setMainSwiper] = useState(null)
 
   const slides = []
+  const thumbs = []
   for(let i=1; i<=10; i++) {
     (new Image()).src = `https://picsum.photos/id/${i}/1000/880` // preload images
-    slides.push(
+    thumbs.push(      
+      <SwiperSlide key={`thumb-${i}`}>
+        <img src={`https://picsum.photos/id/${i}/200/100`} alt={`Thumb ${i}`} />
+      </SwiperSlide>
+    )
+    slides.push(      
       <SwiperSlide key={`slide-${i}`}>
-        <img src={`https://picsum.photos/id/${i}/200/100`} alt={`Imagen ${i}`} onClick={ (e) => setImagen(`https://picsum.photos/id/${i}/1000/880`)} />
+        <img src={`https://picsum.photos/id/${i}/1000/880`} alt={`Imagen ${i}`} />
       </SwiperSlide>
     )
   }
 
   return (
     <div>
-      <img src={imagen} alt="imagen-principal" />
-
       <div style={{width: '1024px'}}>
         <Swiper
-          spaceBetween={50}
-          slidesPerView={5}
-          slidesPerGroup={5}
+          id="main"
+          spaceBetween={0}
+          slidesPerView={1}
+          onSwiper={setMainSwiper}
+          controller={{control: thumbsSwiper}}
           navigation
           pagination
-          loop={true}
-          loopFillGroupWithBlank={true}
-          onSlideChange={ s => console.dir(s) }
         >
           {slides}
+        </Swiper>
+        <Swiper
+          id="thumbs"
+          onSwiper={setThumbsSwiper}
+          controller={{control: mainSwiper}}
+          spaceBetween={5}
+          slidesPerView={5}          
+          navigation
+          pagination
+        >
+          {thumbs}
         </Swiper>
       </div>
     </div>
