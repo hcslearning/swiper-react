@@ -1,9 +1,9 @@
 import {Swiper, SwiperSlide} from 'swiper/react'
-import SwiperCore, {Navigation, Pagination, Thumbs} from 'swiper'
+import SwiperCore, {Navigation, Pagination, Thumbs, EffectFade} from 'swiper'
 import 'swiper/swiper-bundle.css'
 import { useState } from 'react'
 
-SwiperCore.use( [Navigation, Pagination, Thumbs] )
+SwiperCore.use( [Navigation, Pagination, Thumbs, EffectFade] )
 
 function App() {
 
@@ -15,7 +15,7 @@ function App() {
     (new Image()).src = `https://picsum.photos/id/${i}/1000/880` // preload images
     thumbs.push(      
       <SwiperSlide key={`thumb-${i}`}>
-        <img src={`https://picsum.photos/id/${i}/200/100`} alt={`Thumb ${i}`} />
+        <img src={`https://picsum.photos/id/${i}/200/100`} alt={`Thumb ${i}`} style={{cursor: 'pointer'}} />
       </SwiperSlide>
     )
     slides.push(      
@@ -30,6 +30,7 @@ function App() {
       <div style={{width: '1024px'}}>
         <Swiper
           id="main"
+          effect="fade"
           spaceBetween={0}
           slidesPerView={1}
           thumbs={{swiper: thumbsSwiper}}
@@ -46,7 +47,6 @@ function App() {
           spaceBetween={5}
           slidesPerView={5}          
           navigation
-          pagination
         >
           {thumbs}
         </Swiper>
